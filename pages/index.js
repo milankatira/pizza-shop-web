@@ -4,8 +4,8 @@ import styles from "../styles/Home.module.css";
 import Featured from "../components/Featured";
 import PizzaCard from "../components/PizzaCard";
 import PizzaList from "../components/PizzaList";
-
-export default function Home() {
+import axios from "axios";
+export default function Home({pizzaList}) {
   return (
     <div className="">
       <Head>
@@ -14,7 +14,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Featured />
-      <PizzaList />
+      <PizzaList pizzaList={pizzaList} />
     </div>
   );
 }
+
+export const getServerSideProps = async () => {
+  const res = await axios.get("http://localhost:3000/api/product");
+
+  return {
+    props: {
+      pizzaList: res.data,
+    },
+  };
+};
